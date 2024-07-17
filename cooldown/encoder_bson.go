@@ -24,3 +24,13 @@ func (c *CoolDown) MarshalBSON() ([]byte, error) {
 func (c *CoolDown) UnmarshalBSON(b []byte) error {
 	return unmarshalCooldown(c, b, bsonMarshaler{})
 }
+
+// MarshalBSON ...
+func (m MappedCoolDown[T]) MarshalBSON() ([]byte, error) {
+	return marshalMappedCooldown(m, bsonMarshaler{})
+}
+
+// UnmarshalBSON ...
+func (m MappedCoolDown[T]) UnmarshalBSON(b []byte) error {
+	return unmarshalMappedCooldown(m, b, bsonMarshaler{})
+}

@@ -26,3 +26,13 @@ func (c *CoolDown) MarshalJSON() ([]byte, error) {
 func (c *CoolDown) UnmarshalJSON(b []byte) error {
 	return unmarshalCooldown(c, b, jsonMarshaler{})
 }
+
+// MarshalJSON ...
+func (m MappedCoolDown[T]) MarshalJSON() ([]byte, error) {
+	return marshalMappedCooldown(m, jsonMarshaler{})
+}
+
+// UnmarshalJSON ...
+func (m MappedCoolDown[T]) UnmarshalJSON(b []byte) error {
+	return unmarshalMappedCooldown(m, b, jsonMarshaler{})
+}

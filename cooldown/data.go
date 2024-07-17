@@ -30,3 +30,31 @@ func unmarshalCooldown(c *CoolDown, b []byte, marshaler gophig.Marshaler) error 
 	c.remainingAtPause.Store(d.RemainingAtPause)
 	return err
 }
+
+func marshalMappedCooldown[T comparable](m MappedCoolDown[T], marshaler gophig.Marshaler) ([]byte, error) {
+	d := map[T]coolDownData{}
+	for k, cd := range m {
+		d[k] = coolDownData{
+			Expiration:       cd.expiration.Load(),
+			Paused:           cd.paused.Load(),
+			RemainingAtPause: cd.remainingAtPause.Load(),
+		}
+	}
+	return marshaler.Marshal(d)
+}
+
+func unmarshalMappedCooldown[T comparable](m MappedCoolDown[T], b []byte, marshaler gophig.Marshaler) error {
+	d := map[T]coolDownData{}
+	err := marshaler.Unmarshal(b, &d)
+	if err != nil {
+		return err
+	}
+	for k, cd := range d {
+		m[k] = &CoolDown{
+			expiration:       *atomic.NewValue(cd.Expiration),
+			paused:           *atomic.NewBool(cd.Paused),
+			remainingAtPause: *atomic.NewValue(cd.RemainingAtPause),
+		}
+	}
+	return nil
+}
