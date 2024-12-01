@@ -9,7 +9,6 @@ require (
 	github.com/restartfu/gophig v0.0.0-20240717021649-39848407f9f9
 	github.com/sandertv/gophertunnel v1.39.0
 	github.com/sirupsen/logrus v1.9.3
-	go.mongodb.org/mongo-driver v1.16.0
 )
 
 require (
@@ -21,6 +20,7 @@ require (
 	github.com/go-jose/go-jose/v3 v3.0.3 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
+	github.com/google/go-cmp v0.6.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.17.9 // indirect
 	github.com/kr/pretty v0.3.1 // indirect

@@ -64,3 +64,13 @@ func (m MappedCoolDown[T]) All() (coolDowns []*CoolDown) {
 	}
 	return coolDowns
 }
+
+// ActiveKeys returns all active keys
+func (m MappedCoolDown[T]) ActiveKeys() (keys []T) {
+	for key, coolDown := range m {
+		if coolDown.Active() {
+			keys = append(keys, key)
+		}
+	}
+	return keys
+}
