@@ -44,6 +44,9 @@ func marshalMappedCooldown[T comparable](m MappedCoolDown[T], marshaler gophig.M
 }
 
 func unmarshalMappedCooldown[T comparable](m MappedCoolDown[T], b []byte, marshaler gophig.Marshaler) error {
+	if m == nil {
+		m = make(MappedCoolDown[T])
+	}
 	d := map[T]coolDownData{}
 	err := marshaler.Unmarshal(b, &d)
 	if err != nil {
