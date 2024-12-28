@@ -20,6 +20,9 @@ func (m MappedCoolDown[T]) Active(key T) bool {
 
 // Set sets the cool-down.
 func (m MappedCoolDown[T]) Set(key T, d time.Duration) {
+	if m == nil {
+		m = NewMappedCoolDown[T]()
+	}
 	coolDown := m.Key(key)
 	coolDown.Set(d)
 	m[key] = coolDown
