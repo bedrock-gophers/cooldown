@@ -34,6 +34,9 @@ func (m MappedCoolDown[T]) Reduce(key T, d time.Duration) {
 
 // Key returns the cool-down for the key.
 func (m MappedCoolDown[T]) Key(key T) *CoolDown {
+	if m == nil {
+		m = NewMappedCoolDown[T]()
+	}
 	coolDown, ok := m[key]
 	if !ok {
 		newCD := NewCoolDown()
