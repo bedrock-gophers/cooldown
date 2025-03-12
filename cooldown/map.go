@@ -19,39 +19,39 @@ func (m MappedCoolDown[T]) Active(key T) bool {
 }
 
 // Set sets the cool-down.
-func (m MappedCoolDown[T]) Set(key T, d time.Duration) {
-	if m == nil {
-		m = NewMappedCoolDown[T]()
+func (m *MappedCoolDown[T]) Set(key T, d time.Duration) {
+	if *m == nil {
+		*m = NewMappedCoolDown[T]()
 	}
 	coolDown := m.Key(key)
 	coolDown.Set(d)
-	m[key] = coolDown
+	(*m)[key] = coolDown
 }
 
 // Reduce reduces the cool-down.
-func (m MappedCoolDown[T]) Reduce(key T, d time.Duration) {
+func (m *MappedCoolDown[T]) Reduce(key T, d time.Duration) {
 	coolDown := m.Key(key)
 	coolDown.Reduce(d)
-	m[key] = coolDown
+	(*m)[key] = coolDown
 }
 
 // Key returns the cool-down for the key.
-func (m MappedCoolDown[T]) Key(key T) *CoolDown {
-	if m == nil {
-		m = NewMappedCoolDown[T]()
+func (m *MappedCoolDown[T]) Key(key T) *CoolDown {
+	if *m == nil {
+		*m = NewMappedCoolDown[T]()
 	}
-	coolDown, ok := m[key]
+	coolDown, ok := (*m)[key]
 	if !ok {
 		newCD := NewCoolDown()
-		m[key] = newCD
+		(*m)[key] = newCD
 		return newCD
 	}
 	return coolDown
 }
 
 // Reset resets the cool-down.
-func (m MappedCoolDown[T]) Reset(key T) {
-	delete(m, key)
+func (m *MappedCoolDown[T]) Reset(key T) {
+	delete(*m, key)
 }
 
 // Remaining returns the remaining time of the cool-down.
