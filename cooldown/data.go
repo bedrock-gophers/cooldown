@@ -1,9 +1,10 @@
 package cooldown
 
 import (
+	"time"
+
 	"github.com/df-mc/atomic"
 	"github.com/restartfu/gophig"
-	"time"
 )
 
 // coolDownData represents the data of a CoolDown that is marshaled and unmarshaled.
@@ -43,9 +44,9 @@ func marshalMappedCooldown[T comparable](m MappedCoolDown[T], marshaler gophig.M
 	return marshaler.Marshal(d)
 }
 
-func unmarshalMappedCooldown[T comparable](m MappedCoolDown[T], b []byte, marshaler gophig.Marshaler) error {
-	if m == nil {
-		m = make(MappedCoolDown[T])
+func unmarshalMappedCooldown[T comparable](m *MappedCoolDown[T], b []byte, marshaler gophig.Marshaler) error {
+	if *m == nil {
+		*m = make(MappedCoolDown[T])
 	}
 	d := map[T]coolDownData{}
 	err := marshaler.Unmarshal(b, &d)
@@ -53,7 +54,7 @@ func unmarshalMappedCooldown[T comparable](m MappedCoolDown[T], b []byte, marsha
 		return err
 	}
 	for k, cd := range d {
-		m[k] = &CoolDown{
+		(*m)[k] = &CoolDown{
 			expiration:       *atomic.NewValue(cd.Expiration),
 			paused:           *atomic.NewBool(cd.Paused),
 			remainingAtPause: *atomic.NewValue(cd.RemainingAtPause),

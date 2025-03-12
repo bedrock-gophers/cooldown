@@ -31,6 +31,6 @@ func (m MappedCoolDown[T]) MarshalBSON() ([]byte, error) {
 }
 
 // UnmarshalBSON ...
-func (m MappedCoolDown[T]) UnmarshalBSON(b []byte) error {
+func (m *MappedCoolDown[T]) UnmarshalBSON(b []byte) error {
 	return unmarshalMappedCooldown(m, b, bsonMarshaler{})
 }
